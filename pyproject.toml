@@ -1,0 +1,16 @@
+[project]
+name = "petarelasi"
+version = "1.0.0"
+description = "Diagram relasi SQLite dengan sambungan foreign key per kolom"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+petarelasi = "petarelasi.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["petarelasi"]

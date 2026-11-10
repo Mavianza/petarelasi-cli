@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "request_date": "2026-11-11",
+  "repository": "petarelasi-cli",
+  "payload_sha256": "fc89aa89f842a521a4fcb5c4ed440fd0b682de1976c9b81691da707f7ef6ee6d",
+  "source_repository": "Mavianza/daily-app-publisher",
+  "source_commit": "af7a16c8ca155f6a53c5285f4747ec12de5875b8",
+  "source_run_url": "https://github.com/Mavianza/daily-app-publisher/actions/runs/42867391830",
+  "published_at": "2026-11-10T17:40:57.035142+00:00"
+}
