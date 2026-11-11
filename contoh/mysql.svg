@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 822 452" width="822" height="452" role="img" aria-label="Diagram relasi basis data">
+  <rect x="0" y="0" width="822" height="452" fill="#f8fafc" />
+  <defs>
+    <clipPath id="clip-table-0">
+      <rect x="67" y="24" width="268" height="124" />
+    </clipPath>
+    <clipPath id="clip-table-1">
+      <rect x="461" y="24" width="268" height="124" />
+    </clipPath>
+    <clipPath id="clip-table-2">
+      <rect x="67" y="199" width="268" height="152" />
+    </clipPath>
+  </defs>
+  <g id="relations">
+    <polyline id="edge-F1" fill="none" stroke="#1766a4" points="734,130 753,130 753,167 766,167 766,82 734,82" stroke-width="1.6" data-source="table-1-c2" data-target="table-1-c0">
+      <title>perpustakaan.buku.buku_induk → perpustakaan.buku.id</title>
+    </polyline>
+    <polygon points="734,82 742,78 742,86" fill="#1766a4" />
+    <polyline id="edge-F2" fill="none" stroke="#71509a" points="340,333 359,333 359,370 372,370 372,82 456,82" stroke-width="1.6" data-source="table-2-c3" data-target="table-1-c0">
+      <title>perpustakaan.pinjam.buku_id → perpustakaan.buku.id</title>
+    </polyline>
+    <polygon points="456,82 448,78 448,86" fill="#71509a" />
+    <polyline id="edge-F3.1" fill="none" stroke="#0f776d" points="340,277 385,277 385,383 398,383 398,110 340,110" stroke-width="1.6" data-source="table-2-c1" data-target="table-0-c1">
+      <title>perpustakaan.pinjam.unit_anggota → perpustakaan.anggota.unit</title>
+    </polyline>
+    <polygon points="340,110 348,106 348,114" fill="#0f776d" />
+    <polyline id="edge-F3.2" fill="none" stroke="#0f776d" points="340,305 411,305 411,396 424,396 424,82 340,82" stroke-width="1.6" data-source="table-2-c2" data-target="table-0-c0">
+      <title>perpustakaan.pinjam.kode_anggota → perpustakaan.anggota.kode</title>
+    </polyline>
+    <polygon points="340,82 348,78 348,86" fill="#0f776d" />
+  </g>
+  <g id="table-0">
+    <rect x="62" y="24" width="278" height="124" fill="#fff" stroke="#90a5ba" />
+    <rect x="62" y="24" width="278" height="40" fill="#20364f" />
+    <g clip-path="url(#clip-table-0)">
+      <text x="72" y="49" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="15">perpustakaan.anggota</text>
+      <rect x="68" y="65" width="266" height="26" fill="#f1f5f9" />
+      <text id="table-0-c0" x="72" y="82" fill="#172e42" font-family="monospace" font-size="12">[PK2] kode  ·  VARCHAR(20)<title>[PK2] kode  ·  VARCHAR(20)</title>
+      </text>
+      <rect x="68" y="93" width="266" height="26" fill="#ffffff" />
+      <text id="table-0-c1" x="72" y="110" fill="#172e42" font-family="monospace" font-size="12">[PK1] unit  ·  VARCHAR(20)<title>[PK1] unit  ·  VARCHAR(20)</title>
+      </text>
+      <rect x="68" y="121" width="266" height="26" fill="#f1f5f9" />
+      <text id="table-0-c2" x="72" y="138" fill="#172e42" font-family="monospace" font-size="12">nama  ·  VARCHAR(100)<title>nama  ·  VARCHAR(100)</title>
+      </text>
+    </g>
+  </g>
+  <g id="table-1">
+    <rect x="456" y="24" width="278" height="124" fill="#fff" stroke="#90a5ba" />
+    <rect x="456" y="24" width="278" height="40" fill="#20364f" />
+    <g clip-path="url(#clip-table-1)">
+      <text x="466" y="49" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="15">perpustakaan.buku</text>
+      <rect x="462" y="65" width="266" height="26" fill="#f1f5f9" />
+      <text id="table-1-c0" x="466" y="82" fill="#172e42" font-family="monospace" font-size="12">[PK1] id  ·  INT<title>[PK1] id  ·  INT</title>
+      </text>
+      <rect x="462" y="93" width="266" height="26" fill="#ffffff" />
+      <text id="table-1-c1" x="466" y="110" fill="#172e42" font-family="monospace" font-size="12">judul  ·  VARCHAR(200)<title>judul  ·  VARCHAR(200)</title>
+      </text>
+      <rect x="462" y="121" width="266" height="26" fill="#f1f5f9" />
+      <text id="table-1-c2" x="466" y="138" fill="#172e42" font-family="monospace" font-size="12">[FK] buku_induk  ·  INT<title>[FK] buku_induk  ·  INT</title>
+      </text>
+    </g>
+  </g>
+  <g id="table-2">
+    <rect x="62" y="199" width="278" height="152" fill="#fff" stroke="#90a5ba" />
+    <rect x="62" y="199" width="278" height="40" fill="#20364f" />
+    <g clip-path="url(#clip-table-2)">
+      <text x="72" y="224" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="15">perpustakaan.pinjam</text>
+      <rect x="68" y="240" width="266" height="26" fill="#f1f5f9" />
+      <text id="table-2-c0" x="72" y="257" fill="#172e42" font-family="monospace" font-size="12">[PK1] id  ·  INT<title>[PK1] id  ·  INT</title>
+      </text>
+      <rect x="68" y="268" width="266" height="26" fill="#ffffff" />
+      <text id="table-2-c1" x="72" y="285" fill="#172e42" font-family="monospace" font-size="12">[FK] unit_anggota  ·  VARCHAR(20)<title>[FK] unit_anggota  ·  VARCHAR(20)</title>
+      </text>
+      <rect x="68" y="296" width="266" height="26" fill="#f1f5f9" />
+      <text id="table-2-c2" x="72" y="313" fill="#172e42" font-family="monospace" font-size="12">[FK] kode_anggota  ·  VARCHAR(20)<title>[FK] kode_anggota  ·  VARCHAR(20)</title>
+      </text>
+      <rect x="68" y="324" width="266" height="26" fill="#ffffff" />
+      <text id="table-2-c3" x="72" y="341" fill="#172e42" font-family="monospace" font-size="12">[FK] buku_id  ·  INT<title>[FK] buku_id  ·  INT</title>
+      </text>
+    </g>
+  </g>
+  <g font-family="monospace" font-size="10" font-weight="bold">
+    <text x="759" y="177" fill="#1766a4" text-anchor="middle">F1</text>
+    <text x="365" y="380" fill="#71509a" text-anchor="middle">F2</text>
+    <text x="391" y="393" fill="#0f776d" text-anchor="middle">F3.1</text>
+    <text x="417" y="406" fill="#0f776d" text-anchor="middle">F3.2</text>
+  </g>
+</svg>

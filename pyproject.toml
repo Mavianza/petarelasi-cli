@@ -1,9 +1,16 @@
 [project]
 name = "petarelasi"
-version = "1.0.0"
-description = "Diagram relasi SQLite dengan sambungan foreign key per kolom"
+version = "1.1.0"
+description = "ERD Draw.io dan SVG dari SQLite, ekspor SQL dan koneksi database"
+readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []
+
+[project.optional-dependencies]
+sql = ["sqlglot==30.31.0"]
+postgres = ["SQLAlchemy==2.0.57", "psycopg[binary]==3.3.8"]
+mysql = ["SQLAlchemy==2.0.57", "PyMySQL==1.2.4"]
+all = ["sqlglot==30.31.0", "SQLAlchemy==2.0.57", "psycopg[binary]==3.3.8", "PyMySQL==1.2.4"]
 
 [project.scripts]
 petarelasi = "petarelasi.__main__:main"

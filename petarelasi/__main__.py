@@ -6,8 +6,10 @@ import sqlite3
 import sys
 
 from .layout import layout
+from . import __version__
 from .render import drawio, svg
-from .schema import read_snapshot, sqlite_snapshot
+from .schema import sqlite_snapshot
+from .sources import DIALECTS, load_source
 
 
 DEMO = """
@@ -52,18 +54,22 @@ def snapshot_bytes(schema) -> bytes:
 
 
 def cli_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="PetaRelasi, pembuat ERD dari SQLite atau snapshot JSON.")
+    parser = argparse.ArgumentParser(description="PetaRelasi, pembuat ERD dari database, ekspor SQL atau snapshot JSON.")
+    parser.add_argument("--version", action="version", version=f"PetaRelasi {__version__}")
     sub = parser.add_subparsers(dest="action", required=True)
     demo = sub.add_parser("demo", help="Buat SQLite, JSON, Draw.io dan SVG contoh.")
     demo.add_argument("directory", type=Path)
-    inspect = sub.add_parser("snapshot", help="Simpan struktur SQLite dalam JSON.")
-    inspect.add_argument("database", type=Path)
+    inspect = sub.add_parser("snapshot", help="Simpan struktur database atau SQL dalam JSON.")
+    inspect.add_argument("database", help="File SQLite, .sql, .json, atau env:NAMA_VARIABEL.")
     inspect.add_argument("output", type=Path)
-    render = sub.add_parser("render", help="Buat diagram dari SQLite atau snapshot .json.")
-    render.add_argument("source", type=Path)
+    render = sub.add_parser("render", help="Buat diagram dari database, .sql atau snapshot .json.")
+    render.add_argument("source", help="File SQLite, .sql, .json, atau env:NAMA_VARIABEL.")
     render.add_argument("output", type=Path, help="Berkas baru .drawio atau .svg.")
     render.add_argument("--focus", help="Nama tabel pusat.")
     render.add_argument("--radius", type=int, choices=range(6), help="Jarak relasi 0–5 dari tabel pusat. Bawaan 1.")
+    for command in (inspect, render):
+        command.add_argument("--dialect", choices=DIALECTS, help="Wajib untuk .sql. MariaDB memakai mysql.")
+        command.add_argument("--schema", help="Schema untuk tabel SQL tanpa prefix atau schema awal koneksi.")
     return parser
 
 
@@ -86,7 +92,7 @@ def main(argv=None) -> int:
         if args.action == "demo":
             demo(args.directory)
         elif args.action == "snapshot":
-            schema = sqlite_snapshot(args.database)
+            schema = load_source(args.database, dialect=args.dialect, schema=args.schema)
             write_new(args.output, snapshot_bytes(schema))
             print(f"{len(schema.tables)} tabel, {len(schema.foreign_keys)} foreign key. Hasil di {args.output}.")
         else:
@@ -95,8 +101,7 @@ def main(argv=None) -> int:
                 raise ValueError("Keluaran harus berakhiran .drawio atau .svg.")
             if args.radius is not None and args.focus is None:
                 raise ValueError("--radius memerlukan --focus.")
-            schema = (read_snapshot(args.source) if args.source.suffix.lower() == ".json"
-                      else sqlite_snapshot(args.source))
+            schema = load_source(args.source, dialect=args.dialect, schema=args.schema)
             if args.focus is not None:
                 schema = schema.focus(args.focus, args.radius if args.radius is not None else 1)
             diagram = layout(schema)

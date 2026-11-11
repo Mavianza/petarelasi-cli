@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile>
+  <diagram id="erd" name="ERD">
+    <mxGraphModel dx="0" dy="0" grid="0" page="0" pageWidth="822" pageHeight="452">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="table-0" value="perpustakaan.anggota" parent="1" vertex="1" style="swimlane;horizontal=1;startSize=40;collapsible=0;html=0;whiteSpace=wrap;fillColor=#20364f;swimlaneFillColor=#ffffff;fontColor=#ffffff;strokeColor=#90a5ba;fontStyle=1;">
+          <mxGeometry x="62" y="24" width="278" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="table-0-c0" value="[PK2] kode  ·  VARCHAR(20)" parent="table-0" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#f1f5f9;">
+          <mxGeometry x="0" y="40" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-0-c1" value="[PK1] unit  ·  VARCHAR(20)" parent="table-0" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#ffffff;">
+          <mxGeometry x="0" y="68" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-0-c2" value="nama  ·  VARCHAR(100)" parent="table-0" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#f1f5f9;">
+          <mxGeometry x="0" y="96" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-1" value="perpustakaan.buku" parent="1" vertex="1" style="swimlane;horizontal=1;startSize=40;collapsible=0;html=0;whiteSpace=wrap;fillColor=#20364f;swimlaneFillColor=#ffffff;fontColor=#ffffff;strokeColor=#90a5ba;fontStyle=1;">
+          <mxGeometry x="456" y="24" width="278" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="table-1-c0" value="[PK1] id  ·  INT" parent="table-1" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#f1f5f9;">
+          <mxGeometry x="0" y="40" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-1-c1" value="judul  ·  VARCHAR(200)" parent="table-1" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#ffffff;">
+          <mxGeometry x="0" y="68" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-1-c2" value="[FK] buku_induk  ·  INT" parent="table-1" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#f1f5f9;">
+          <mxGeometry x="0" y="96" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-2" value="perpustakaan.pinjam" parent="1" vertex="1" style="swimlane;horizontal=1;startSize=40;collapsible=0;html=0;whiteSpace=wrap;fillColor=#20364f;swimlaneFillColor=#ffffff;fontColor=#ffffff;strokeColor=#90a5ba;fontStyle=1;">
+          <mxGeometry x="62" y="199" width="278" height="152" as="geometry" />
+        </mxCell>
+        <mxCell id="table-2-c0" value="[PK1] id  ·  INT" parent="table-2" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#f1f5f9;">
+          <mxGeometry x="0" y="40" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-2-c1" value="[FK] unit_anggota  ·  VARCHAR(20)" parent="table-2" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#ffffff;">
+          <mxGeometry x="0" y="68" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-2-c2" value="[FK] kode_anggota  ·  VARCHAR(20)" parent="table-2" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#f1f5f9;">
+          <mxGeometry x="0" y="96" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="table-2-c3" value="[FK] buku_id  ·  INT" parent="table-2" vertex="1" style="shape=rectangle;align=left;verticalAlign=middle;html=0;whiteSpace=wrap;overflow=hidden;spacingLeft=8;strokeColor=none;fillColor=#ffffff;">
+          <mxGeometry x="0" y="124" width="278" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-F1" value="F1" parent="1" edge="1" source="table-1-c2" target="table-1-c0" style="noEdgeStyle=1;orthogonal=1;html=0;strokeColor=#1766a4;endArrow=block;endFill=1;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.35714286;exitPerimeter=0;entryX=1;entryY=0.64285714;entryPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="753" y="130" />
+              <mxPoint x="753" y="167" />
+              <mxPoint x="766" y="167" />
+              <mxPoint x="766" y="82" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-F2" value="F2" parent="1" edge="1" source="table-2-c3" target="table-1-c0" style="noEdgeStyle=1;orthogonal=1;html=0;strokeColor=#71509a;endArrow=block;endFill=1;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.35714286;exitPerimeter=0;entryX=0;entryY=0.64285714;entryPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="359" y="333" />
+              <mxPoint x="359" y="370" />
+              <mxPoint x="372" y="370" />
+              <mxPoint x="372" y="82" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-F3.1" value="F3.1" parent="1" edge="1" source="table-2-c1" target="table-0-c1" style="noEdgeStyle=1;orthogonal=1;html=0;strokeColor=#0f776d;endArrow=block;endFill=1;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.35714286;exitPerimeter=0;entryX=1;entryY=0.64285714;entryPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="385" y="277" />
+              <mxPoint x="385" y="383" />
+              <mxPoint x="398" y="383" />
+              <mxPoint x="398" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-F3.2" value="F3.2" parent="1" edge="1" source="table-2-c2" target="table-0-c0" style="noEdgeStyle=1;orthogonal=1;html=0;strokeColor=#0f776d;endArrow=block;endFill=1;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.35714286;exitPerimeter=0;entryX=1;entryY=0.64285714;entryPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="411" y="305" />
+              <mxPoint x="411" y="396" />
+              <mxPoint x="424" y="396" />
+              <mxPoint x="424" y="82" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
