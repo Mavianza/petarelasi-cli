@@ -57,6 +57,7 @@ def cli_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="PetaRelasi, pembuat ERD dari database, ekspor SQL atau snapshot JSON.")
     parser.add_argument("--version", action="version", version=f"PetaRelasi {__version__}")
     sub = parser.add_subparsers(dest="action", required=True)
+    sub.add_parser("app", help="Buka PetaRelasi Studio, antarmuka desktop interaktif.")
     demo = sub.add_parser("demo", help="Buat SQLite, JSON, Draw.io dan SVG contoh.")
     demo.add_argument("directory", type=Path)
     inspect = sub.add_parser("snapshot", help="Simpan struktur database atau SQL dalam JSON.")
@@ -89,7 +90,10 @@ def main(argv=None) -> int:
     parser = cli_parser()
     args = parser.parse_args(argv)
     try:
-        if args.action == "demo":
+        if args.action == "app":
+            from .studio import run
+            return run()
+        elif args.action == "demo":
             demo(args.directory)
         elif args.action == "snapshot":
             schema = load_source(args.database, dialect=args.dialect, schema=args.schema)

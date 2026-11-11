@@ -1,10 +1,46 @@
-# PetaRelasi 1.1
+# PetaRelasi 1.2 · Studio & CLI
 
-Ubah struktur database menjadi ERD Draw.io yang bisa disunting, tanpa menggambar tabel dan sambungan satu per satu. Setiap panah menempel pada baris kolom foreign key dan kolom tujuannya. Keluaran SVG tersedia untuk pratinjau.
+PetaRelasi Studio adalah aplikasi desktop untuk mengubah struktur database menjadi diagram interaktif dan ERD Draw.io. Buka file atau tempel SQL, jelajahi diagram, lalu klik tabel/kolom/garis untuk memahami primary key dan foreign key. Gunakan ekspor Draw.io untuk menyunting diagram lebih lanjut.
 
-Versi 1.1 menambahkan pembacaan ekspor SQL PostgreSQL, MySQL/MariaDB, SQL Server, dan SQLite. Ada juga adapter koneksi metadata PostgreSQL dan MySQL/MariaDB melalui environment variable. Input SQLite dan JSON dari versi sebelumnya tetap bisa dipakai.
+![Antarmuka aktual PetaRelasi Studio, dengan contoh sintetis FK gabungan](docs/studio.png)
 
-![Contoh diagram PetaRelasi dari ekspor MySQL](contoh/mysql.svg)
+## Jalankan aplikasi
+
+**Windows:** siapkan Python 3.10–3.14 64-bit, ekstrak proyek, lalu klik dua kali **`Mulai_Studio.cmd`**. Peluncur membuat lingkungan `.venv` dan memasang dependensi saat pertama digunakan. Proses pertama membutuhkan internet. Pada pembukaan berikutnya, pemasangan dilewati jika versi aplikasi dan dependensi sudah tersedia.
+
+Alternatif dari terminal di folder proyek, juga untuk Linux/macOS:
+
+```powershell
+python -m pip install ".[app]"
+python -m petarelasi app
+```
+
+Perintah `petarelasi-studio` juga tersedia setelah instalasi. Aplikasi berjalan sebagai jendela desktop Qt; tidak membutuhkan server web, akun, atau koneksi internet setelah dependensi terpasang. Mode CLI SQLite/JSON tetap dapat dijalankan tanpa extra aplikasi.
+
+Ini adalah distribusi source dengan peluncur Windows, belum berupa installer `.exe`. Sistem operasi perlu mendukung Qt 6.10. Linux memerlukan lingkungan desktop dan library platform Qt yang sesuai; tes otomatis di sini memakai plugin offscreen. Peluncur `.cmd` belum dijalankan pada Windows nyata.
+
+## Alur penggunaan Studio
+
+1. **Mulai dari contoh.** Saat dibuka, contoh perpustakaan sintetis langsung tampil. Pilih contoh toko untuk melihat alur pelanggan → pesanan → detail pesanan → produk. SQL contoh bisa diedit untuk belajar.
+2. **Buka sumber sendiri.** Pada tab **Buka file**, pilih SQLite, ekspor `.sql` UTF-8, atau snapshot `.json`, lalu klik **Buat diagram**. Untuk SQL, pilih dialek dan schema bawaan bila perlu. Tab **Tempel SQL** menerima definisi tabel lengkap. File juga bisa diseret ke area diagram; file SQL menunggu pilihan dialek dan tombol Buat diagram.
+3. **Jelajahi.** Cari tabel dari daftar kiri. Gulir mouse untuk zoom, seret area kosong untuk bergeser, dan klik **Pas layar** untuk melihat seluruh diagram. Pilihan **Fokus** dan **Radius** membatasi diagram pada tetangga tabel yang dipilih.
+4. **Pelajari.** Klik judul tabel untuk ringkasan. Klik baris kolom untuk tipe, posisi PK, serta referensi masuk/keluar. Klik garis untuk melihat seluruh pasangan kolom dari satu FK; FK gabungan dijelaskan sebagai satu grup. Tombol **Panduan PK & FK** mengembalikan penjelasan dasar.
+5. **Ekspor tampilan.** Pilih Draw.io, SVG, atau snapshot JSON di kanan atas. Semua format mengikuti tabel dan relasi dalam fokus saat ini. Untuk mengekspor seluruh skema, pilih **Semua tabel** terlebih dahulu. Zoom dan sorotan belajar hanya berlaku di pratinjau. File yang sudah ada dilindungi dari penimpaan.
+
+Shortcut: **Ctrl+O** memilih file, **Ctrl+Enter** membuat diagram, **Ctrl+S** membuka dialog ekspor. Untuk membuka hasil Draw.io, gunakan **File → Open From → Device** di diagrams.net atau Draw.io Desktop.
+
+## Belajar dari skema yang nyata
+
+- **PK1, PK2, ...** menunjukkan urutan kolom dalam primary key, termasuk jika urutannya berbeda dari urutan kolom tabel.
+- **FK** menandai kolom sumber referensi. Panah bergerak dari kolom FK menuju kolom yang dirujuk. Label F1.1/F1.2 menandai pasangan dalam FK gabungan yang sama.
+- Panel penjelasan memakai nama dan relasi yang benar-benar ada dalam skema. Nama kolom seperti `user_id` saja tidak dianggap sebagai FK.
+- Aplikasi membahas struktur. Isi record, validitas data, kardinalitas wajib/opsional, dan aturan bisnis tidak disimpulkan dari nama kolom.
+
+**Jaminan impor:** hanya hasil pembacaan yang berhasil yang menggantikan dokumen. SQL rusak, target FK hilang, atau file tidak bisa dibaca mempertahankan skema, fokus, dan diagram terakhir yang berhasil. Error terlihat di panel sumber, dan diagram sebelumnya masih bisa diekspor. Pekerjaan impor berjalan di worker agar jendela tetap responsif; penutupan saat impor menunggu worker selesai.
+
+Perubahan pada editor SQL ditandai sampai tombol Buat diagram berhasil dijalankan lagi. Isi SQL/tempelan dan file sumber tidak disimpan sebagai riwayat aplikasi. Preferensi yang disimpan hanya ukuran jendela serta direktori buka/ekspor terakhir. Tempelan SQL diparse melalui file sementara yang dihapus setelah pembacaan. UI tidak menjalankan SQL, tidak mengubah database sumber, dan tidak mengirim file ke server.
+
+Studio saat ini memakai sumber file dan tempelan SQL. Adapter koneksi PostgreSQL/MySQL langsung tetap tersedia melalui CLI dengan status eksperimental seperti dijelaskan di bawah.
 
 ## Pilih sumber database
 
@@ -137,6 +173,10 @@ Batas per diagram adalah **48 tabel, 600 kolom, 100 foreign key, dan 120 pasanga
 | `petarelasi/layout.py` | Port tiap kolom dan jalur siku deterministik. |
 | `petarelasi/render.py` | Serialisasi Draw.io XML dan SVG. |
 | `petarelasi/__main__.py` | CLI dan perlindungan file keluaran. |
+| `petarelasi/studio/model.py` | Sesi dokumen, input tempelan SQL, dan penjelasan PK/FK. |
+| `petarelasi/studio/canvas.py` | Pratinjau Qt interaktif dengan geometri dari mesin ekspor. |
+| `petarelasi/studio/window.py` | Antarmuka, worker impor, fokus, inspector, dan dialog ekspor. |
+| `studio_setup.py`, `Mulai_Studio.cmd` | Persiapan lingkungan lokal dan peluncur desktop. |
 | `tests/` | Tes integrasi input, renderer, kegagalan, dan kompatibilitas versi lama. |
 
 Semua adapter masuk ke model skema dan validator yang sama. Foreign key diselesaikan setelah definisi SQL terkumpul agar urutan deklarasi pg_dump dan referensi ke tabel yang baru muncul belakangan tetap benar. Dependensi baru dimuat hanya saat sumbernya dipilih, sehingga mode SQLite/JSON tetap ringan.
@@ -167,6 +207,10 @@ python -m unittest discover -s tests -v
 
 Suite menguji CLI nyata, empat fixture dialek SQL, round-trip SQL → JSON → Draw.io, FK gabungan, nama berpetik, GO dalam string, custom search_path, penggunaan catalog SQL Server, perlindungan keluaran, metadata SQLite nyata, sanitasi error, dan regresi geometri/renderer. Tes lintas schema memakai inspector sintetis; tes ini tidak menggantikan uji server PostgreSQL/MySQL. Tes tanpa extra dapat dijalankan; bagian yang memerlukan extra akan ditandai skipped.
 
+Untuk Studio, tes menekan widget Qt dengan QTest, mengeklik kolom dan garis di canvas, mengimpor melalui dialog file, membuka ulang SQLite/JSON, serta memeriksa hasil ekspor nyata. Tes kegagalan memeriksa bahwa skema/fokus/diagram lama tetap tersedia setelah impor rusak. Penutupan jendela saat worker aktif juga diuji.
+
+Hasil pemeriksaan versi 1.2.0: **49/49 tes lulus** dengan dependensi lengkap pada Python 3.12 dan Qt 6.10.2 menggunakan offscreen di Linux. Tanpa extra: **18 lulus, 31 skipped**. Screenshot di atas adalah render antarmuka aktual dengan data contoh sintetis. Pengoperasian native dan peluncur `.cmd` pada Windows belum diuji di lingkungan ini.
+
 Untuk demo SQLite tanpa dependensi:
 
 ```powershell
@@ -174,4 +218,4 @@ python -m petarelasi demo contoh-baru
 python -m petarelasi --version
 ```
 
-Rujukan: [pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html), [mysqldump](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html), [SSMS Generate Scripts](https://learn.microsoft.com/sql/ssms/scripting/generate-and-publish-scripts-wizard), [SQLGlot](https://sqlglot.com/sqlglot.html), [SQLAlchemy reflection](https://docs.sqlalchemy.org/en/20/core/reflection.html), dan [Draw.io generation](https://www.drawio.com/docs/reference/diagram-generation/).
+Rujukan: [Qt Graphics View](https://doc.qt.io/qtforpython-6/overviews/qtwidgets-graphicsview.html), [pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html), [mysqldump](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html), [SSMS Generate Scripts](https://learn.microsoft.com/sql/ssms/scripting/generate-and-publish-scripts-wizard), [SQLGlot](https://sqlglot.com/sqlglot.html), [SQLAlchemy reflection](https://docs.sqlalchemy.org/en/20/core/reflection.html), dan [Draw.io generation](https://www.drawio.com/docs/reference/diagram-generation/).
